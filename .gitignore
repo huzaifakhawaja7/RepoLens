@@ -1,0 +1,9 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.log
+
+# Node (kept in case any dev tooling is added later)
+node_modules/

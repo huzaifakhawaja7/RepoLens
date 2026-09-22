@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RepoLens — GitHub Profile &amp; Repository Analyzer</title>
+  <meta name="description" content="Clean developer analytics dashboard for GitHub profiles and repositories.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="landing-active">
+  <div class="app-wrapper">
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="header-content">
+        <a href="#" class="brand-group" id="brand-home-link" aria-label="RepoLens Home">
+          <div class="brand-logo" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="4"></circle>
+              <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+              <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line>
+              <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line>
+              <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-title-row">
+              <span class="brand-title">RepoLens</span>
+              <span class="brand-badge">Dev Analytics</span>
+            </div>
+            <p class="brand-subtitle">GitHub Profile &amp; Repository Analyzer</p>
+          </div>
+        </a>
+
+        <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+          <a href="#explore-developers" class="nav-link">Explore</a>
+          <a href="#what-we-analyze" class="nav-link">Analytics</a>
+          <a href="#how-it-works" class="nav-link">Workflow</a>
+          <a href="#capabilities" class="nav-link">Capabilities</a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link nav-link-external" title="GitHub">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            <span>GitHub</span>
+          </a>
+        </nav>
+
+        <form id="search-form" class="search-form header-search-form" role="search">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="username-input"
+              class="search-input"
+              placeholder="Enter GitHub username (e.g. torvalds)"
+              autocomplete="off"
+              spellcheck="false"
+              required
+            >
+            <kbd class="kbd-hint" title="Press / to search">/</kbd>
+          </div>
+          <button type="submit" class="btn-analyze" id="search-btn">
+            <span>Analyze</span>
+            <svg class="btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </header>
+
+    <main id="app" class="main-container">
+      <!-- 1. PRE-SEARCH LANDING PAGE EXPERIENCE -->
+      <div id="landing-view" class="landing-view">
+        <!-- Hero Section -->
+        <section class="landing-hero" aria-label="Hero Overview">
+          <div class="hero-badge">
+            <span class="badge-pulse"></span>
+            <span>Developer Analytics &bull; Direct GitHub REST v3</span>
+          </div>
+
+          <h1 class="hero-headline">
+            Turn GitHub profiles into <br class="hero-br">
+            <span class="text-accent-gradient">actionable developer intelligence.</span>
+          </h1>
+
+          <p class="hero-subtext">
+            Instantly analyze public repository metrics, language distributions, community star volume, fork spread, and rolling push activity in real time. Zero authentication, zero tracking, and pure in-memory client-side execution.
+          </p>
+
+          <!-- Primary Hero Search Form -->
+          <form id="hero-search-form" class="hero-search-form" role="search">
+            <div class="hero-search-box">
+              <div class="hero-search-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                  <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="hero-username-input"
+                class="hero-search-input"
+                placeholder="Enter any GitHub username (e.g. torvalds)"
+                autocomplete="off"
+                spellcheck="false"
+                required
+              >
+              <kbd class="hero-kbd-hint" title="Press / to search">/</kbd>
+              <button type="submit" class="btn-hero-analyze" id="hero-search-btn">
+                <span>Analyze Profile</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- Quick Suggestions Chips -->
+          <div class="hero-suggestions">
+            <span class="hero-suggestions-label">Try popular developers:</span>
+            <div class="hero-suggestions-chips">
+              <button type="button" class="suggestion-chip" data-user="torvalds">torvalds</button>
+              <button type="button" class="suggestion-chip" data-user="sindresorhus">sindresorhus</button>
+              <button type="button" class="suggestion-chip" data-user="gaearon">gaearon</button>
+              <button type="button" class="suggestion-chip" data-user="yyx990803">yyx990803</button>
+              <button type="button" class="suggestion-chip" data-user="antfu">antfu</button>
+              <button type="button" class="suggestion-chip" data-user="octocat">octocat</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Visual Analytics Preview (Sample / Preview) -->
+        <section class="landing-preview-section" aria-label="Visual Analytics Preview">
+          <div class="preview-window-frame">
+            <div class="preview-window-header">
+              <div class="preview-window-controls" aria-hidden="true">
+                <span class="window-dot dot-red"></span>
+                <span class="window-dot dot-yellow"></span>
+                <span class="window-dot dot-green"></span>
+              </div>
+              <div class="preview-window-address">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>repolens.dev/analytics/preview</span>
+              </div>
+              <div class="preview-badge-wrapper">
+                <span class="sample-preview-badge">SAMPLE ANALYSIS &bull; PREVIEW</span>
+              </div>
+            </div>
+
+            <!-- Preview Dashboard Content -->
+            <div class="preview-window-body">
+              <!-- Preview Profile Summary Strip -->
+              <div class="preview-profile-strip">
+                <div class="preview-profile-user">
+                  <div class="preview-avatar">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                  <div class="preview-user-meta">
+                    <div class="preview-user-name">Alex Rivera <span class="preview-user-handle">@sample-dev</span></div>
+                    <div class="preview-user-bio">Open-source distributed systems engineer &bull; Berlin, DE</div>
+                  </div>
+                </div>
+                <div class="preview-profile-stats">
+                  <div class="preview-stat-mini">
+                    <span class="mini-num" data-sample-val="42">42</span>
+                    <span class="mini-label">Repos</span>
+                  </div>
+                  <div class="preview-stat-mini">
+                    <span class="mini-num" data-sample-val="12480">12,480</span>
+                    <span class="mini-label">Followers</span>
+                  </div>
+                  <div class="preview-stat-mini">
+                    <span class="mini-num" data-sample-val="184">184</span>
+                    <span class="mini-label">Following</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Preview 4 Metric Cards -->
+              <div class="preview-metrics-grid">
+                <div class="preview-metric-card">
+                  <div class="metric-card-top">
+                    <span class="metric-label">Repositories</span>
+                    <span class="metric-subtext">Analyzed</span>
+                  </div>
+                  <div class="metric-main">
+                    <span class="metric-value" data-sample-val="42">42</span>
+                    <div class="metric-icon metric-icon-repos" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="preview-metric-card">
+                  <div class="metric-card-top">
+                    <span class="metric-label">Total Stars</span>
+                    <span class="metric-subtext">Earned</span>
+                  </div>
+                  <div class="metric-main">
+                    <span class="metric-value" data-sample-val="18450">18,450</span>
+                    <div class="metric-icon metric-icon-stars" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="preview-metric-card">
+                  <div class="metric-card-top">
+                    <span class="metric-label">Total Forks</span>
+                    <span class="metric-subtext">Community</span>
+                  </div>
+                  <div class="metric-main">
+                    <span class="metric-value" data-sample-val="3210">3,210</span>
+                    <div class="metric-icon metric-icon-forks" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="18" r="3"></circle>
+                        <circle cx="6" cy="6" r="3"></circle>
+                        <circle cx="18" cy="6" r="3"></circle>
+                        <path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"></path>
+                        <path d="M12 12v3"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="preview-metric-card">
+                  <div class="metric-card-top">
+                    <span class="metric-label">Primary Language</span>
+                    <span class="metric-subtext">74% of tagged</span>
+                  </div>
+                  <div class="metric-main">
+                    <div class="metric-value metric-value-lang">
+                      <span class="lang-color-dot" style="background-color: #3178c6;"></span>
+                      <span>TypeScript</span>
+                    </div>
+                    <div class="metric-icon metric-icon-lang" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Preview Middle Row: Language Distribution & Activity -->
+              <div class="preview-middle-row">
+                <!-- Preview Language Card -->
+                <div class="preview-inner-card">
+                  <div class="chart-card-header">
+                    <div class="chart-title-group">
+                      <h3 class="chart-title">Language Distribution</h3>
+                      <p class="chart-subtitle">Primary languages across public repositories</p>
+                    </div>
+                    <span class="card-header-badge">4 Detected</span>
+                  </div>
+                  <div class="preview-donut-display">
+                    <div class="preview-donut-graphic" aria-label="Sample doughnut chart graphic">
+                      <svg width="110" height="110" viewBox="0 0 36 36" class="donut-svg">
+                        <path class="donut-ring" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#21262d" stroke-width="5.5"/>
+                        <path class="donut-segment" stroke="#3178c6" stroke-dasharray="74 26" stroke-dashoffset="25" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="5.5"/>
+                        <path class="donut-segment" stroke="#dea584" stroke-dasharray="14 86" stroke-dashoffset="51" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="5.5"/>
+                        <path class="donut-segment" stroke="#00add8" stroke-dasharray="7 93" stroke-dashoffset="37" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="5.5"/>
+                        <path class="donut-segment" stroke="#3572a5" stroke-dasharray="5 95" stroke-dashoffset="30" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="5.5"/>
+                      </svg>
+                    </div>
+                    <div class="preview-donut-legend">
+                      <div class="legend-pill"><span class="lang-color-dot" style="background:#3178c6"></span> TypeScript (74%)</div>
+                      <div class="legend-pill"><span class="lang-color-dot" style="background:#dea584"></span> Rust (14%)</div>
+                      <div class="legend-pill"><span class="lang-color-dot" style="background:#00add8"></span> Go (7%)</div>
+                      <div class="legend-pill"><span class="lang-color-dot" style="background:#3572a5"></span> Python (5%)</div>
+                    </div>
+                  </div>
+                  <div class="lang-telemetry-row">
+                    <div class="lang-telemetry-item">
+                      <span class="lang-telemetry-label">Languages</span>
+                      <span class="lang-telemetry-num">4</span>
+                    </div>
+                    <div class="lang-telemetry-item">
+                      <span class="lang-telemetry-label">Tagged</span>
+                      <span class="lang-telemetry-num">42/42</span>
+                    </div>
+                    <div class="lang-telemetry-item">
+                      <span class="lang-telemetry-label">Primary</span>
+                      <span class="lang-telemetry-num">TypeScript (74%)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Preview Activity Card -->
+                <div class="preview-inner-card">
+                  <div class="chart-card-header">
+                    <div class="chart-title-group">
+                      <h3 class="chart-title">Repository Activity</h3>
+                      <p class="chart-subtitle">Recent push frequency &bull; rolling windows</p>
+                    </div>
+                    <span class="card-header-badge">Telemetry</span>
+                  </div>
+                  <div class="activity-grid">
+                    <div class="activity-stat">
+                      <span class="activity-stat-label">Today</span>
+                      <span class="activity-stat-value">2</span>
+                    </div>
+                    <div class="activity-stat">
+                      <span class="activity-stat-label">Last 7 Days</span>
+                      <span class="activity-stat-value">7</span>
+                    </div>
+                    <div class="activity-stat">
+                      <span class="activity-stat-label">Last 30 Days</span>
+                      <span class="activity-stat-value">19</span>
+                    </div>
+                  </div>
+                  <ul class="activity-timeline">
+                    <li class="activity-timeline-item">
+                      <span class="timeline-tag">Most Recent</span>
+                      <span class="timeline-repo-link">turbo-cache</span>
+                      <span class="timeline-date">4h ago</span>
+                    </li>
+                    <li class="activity-timeline-item">
+                      <span class="timeline-tag">Oldest Update</span>
+                      <span class="timeline-repo-link">legacy-script</span>
+                      <span class="timeline-date">6y ago</span>
+                    </li>
+                  </ul>
+                  <p class="activity-footnote">Reflects repository push activity, not contribution history.</p>
+                </div>
+              </div>
+
+              <!-- Preview Top Repositories Table -->
+              <div class="preview-inner-card">
+                <div class="chart-card-header">
+                  <div class="chart-title-group">
+                    <h3 class="chart-title">Top Repositories</h3>
+                    <p class="chart-subtitle">Ranked by star count and community forks</p>
+                  </div>
+                  <span class="card-header-badge">Top 3 of 42</span>
+                </div>
+                <ol class="top-repos-list">
+                  <li class="top-repo-row">
+                    <span class="top-repo-rank">01</span>
+                    <div class="top-repo-info">
+                      <span class="top-repo-name">
+                        <svg class="repo-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        turbo-cache
+                      </span>
+                      <span class="top-repo-desc">Ultra-fast distributed caching daemon for continuous integration pipelines.</span>
+                    </div>
+                    <div class="top-repo-meta">
+                      <span class="repo-meta-item repo-lang-pill">
+                        <span class="lang-color-dot" style="background-color: #3178c6;"></span>
+                        <span>TypeScript</span>
+                      </span>
+                      <span class="repo-meta-item top-repo-stars" title="9,420 stars">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" class="icon-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span data-sample-val="9420">9,420</span>
+                      </span>
+                      <span class="repo-meta-item top-repo-forks" title="1,180 forks">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-fork"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"></path><path d="M12 12v3"></path></svg>
+                        <span data-sample-val="1180">1,180</span>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="top-repo-row">
+                    <span class="top-repo-rank">02</span>
+                    <div class="top-repo-info">
+                      <span class="top-repo-name">
+                        <svg class="repo-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        rust-kv
+                      </span>
+                      <span class="top-repo-desc">High-performance embedded key-value storage engine in safe Rust.</span>
+                    </div>
+                    <div class="top-repo-meta">
+                      <span class="repo-meta-item repo-lang-pill">
+                        <span class="lang-color-dot" style="background-color: #dea584;"></span>
+                        <span>Rust</span>
+                      </span>
+                      <span class="repo-meta-item top-repo-stars" title="5,830 stars">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" class="icon-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span data-sample-val="5830">5,830</span>
+                      </span>
+                      <span class="repo-meta-item top-repo-forks" title="640 forks">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-fork"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"></path><path d="M12 12v3"></path></svg>
+                        <span data-sample-val="640">640</span>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="top-repo-row">
+                    <span class="top-repo-rank">03</span>
+                    <div class="top-repo-info">
+                      <span class="top-repo-name">
+                        <svg class="repo-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        devtools-cli
+                      </span>
+                      <span class="top-repo-desc">Modern terminal developer workbench for inspection and repository triage.</span>
+                    </div>
+                    <div class="top-repo-meta">
+                      <span class="repo-meta-item repo-lang-pill">
+                        <span class="lang-color-dot" style="background-color: #3178c6;"></span>
+                        <span>TypeScript</span>
+                      </span>
+                      <span class="repo-meta-item top-repo-stars" title="3,200 stars">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" class="icon-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span data-sample-val="3200">3,200</span>
+                      </span>
+                      <span class="repo-meta-item top-repo-forks" title="410 forks">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-fork"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"></path><path d="M12 12v3"></path></svg>
+                        <span data-sample-val="410">410</span>
+                      </span>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Explore by Developer Type -->
+        <section class="landing-section" id="explore-developers" aria-label="Explore GitHub by Developer Type">
+          <div class="section-header">
+            <span class="section-tag">01 / EXPLORE GITHUB</span>
+            <h2 class="section-title">Explore GitHub.</h2>
+            <p class="section-subtitle">Not sure who to analyze? Explore developers by what they build.</p>
+          </div>
+
+          <div class="explorer-container">
+            <!-- 8 Category Navigation Buttons -->
+            <div class="explorer-categories" id="explorer-categories" role="tablist" aria-label="Developer Categories">
+              <button type="button" class="category-btn" data-category="systems" role="tab" aria-selected="false" id="tab-systems">
+                <span class="category-index">01</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                </span>
+                <span class="category-name">Systems &amp; Infrastructure</span>
+              </button>
+              <button type="button" class="category-btn active" data-category="web" role="tab" aria-selected="true" id="tab-web">
+                <span class="category-index">02</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </span>
+                <span class="category-name">Web &amp; JavaScript</span>
+              </button>
+              <button type="button" class="category-btn" data-category="python" role="tab" aria-selected="false" id="tab-python">
+                <span class="category-index">03</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 0-4 4v2h4a2 2 0 0 1 2 2v2h2a4 4 0 0 0 4-4V6a4 4 0 0 0-4-4h-4z"></path><path d="M12 22a4 4 0 0 0 4-4v-2h-4a2 2 0 0 1-2-2v-2H8a4 4 0 0 0-4 4v2a4 4 0 0 0 4 4h4z"></path><circle cx="9" cy="5" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
+                </span>
+                <span class="category-name">Python &amp; Data</span>
+              </button>
+              <button type="button" class="category-btn" data-category="ai" role="tab" aria-selected="false" id="tab-ai">
+                <span class="category-index">04</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+                </span>
+                <span class="category-name">AI &amp; Machine Learning</span>
+              </button>
+              <button type="button" class="category-btn" data-category="frontend" role="tab" aria-selected="false" id="tab-frontend">
+                <span class="category-index">05</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                </span>
+                <span class="category-name">Frontend &amp; UI</span>
+              </button>
+              <button type="button" class="category-btn" data-category="mobile" role="tab" aria-selected="false" id="tab-mobile">
+                <span class="category-index">06</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </span>
+                <span class="category-name">Mobile &amp; Cross-Platform</span>
+              </button>
+              <button type="button" class="category-btn" data-category="devtools" role="tab" aria-selected="false" id="tab-devtools">
+                <span class="category-index">07</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                </span>
+                <span class="category-name">Developer Tools</span>
+              </button>
+              <button type="button" class="category-btn" data-category="opensource" role="tab" aria-selected="false" id="tab-opensource">
+                <span class="category-index">08</span>
+                <span class="category-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </span>
+                <span class="category-name">Open Source &amp; Tooling</span>
+              </button>
+            </div>
+
+            <!-- Popular Interests Row -->
+            <div class="explorer-interests-bar" id="explorer-interests" aria-label="Popular interests in selected category">
+              <div class="interests-label-group">
+                <svg class="interests-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+                <span class="interests-label">Popular interests:</span>
+              </div>
+              <div class="interests-tags" id="interests-tags">
+                <span class="interest-tag">JavaScript</span>
+                <span class="interest-tag">TypeScript</span>
+                <span class="interest-tag">React</span>
+                <span class="interest-tag">Node.js</span>
+                <span class="interest-tag">Vue</span>
+                <span class="interest-tag">Next.js</span>
+                <span class="interest-tag">Toolchains</span>
+              </div>
+            </div>
+
+            <!-- Profile Cards Display Grid (8 Initial Cards) -->
+            <div class="example-profiles-grid explorer-cards-grid" id="explorer-cards" role="tabpanel" aria-live="polite">
+              <!-- Card 1: Featured -->
+              <button type="button" class="example-profile-card is-featured" data-user="sindresorhus" aria-label="Analyze Sindre Sorhus (@sindresorhus)">
+                <div class="card-featured-badge">Featured</div>
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/sindresorhus?s=96" alt="Sindre Sorhus" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/sindresorhus.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">Sindre Sorhus</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@sindresorhus</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">Full-time open sourcer. 1,000+ npm packages powering the modern JavaScript ecosystem.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">JavaScript</span>
+                  <span class="card-topic-tag">Node.js</span>
+                  <span class="card-topic-tag">CLI</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+
+              <!-- Card 2 -->
+              <button type="button" class="example-profile-card" data-user="gaearon" aria-label="Analyze Dan Abramov (@gaearon)">
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/gaearon?s=96" alt="Dan Abramov" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/gaearon.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">Dan Abramov</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@gaearon</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">Co-author of Redux and Create React App. React architecture &amp; frontend mental models.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">React</span>
+                  <span class="card-topic-tag">Redux</span>
+                  <span class="card-topic-tag">JavaScript</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+
+              <!-- Card 3 -->
+              <button type="button" class="example-profile-card" data-user="tj" aria-label="Analyze TJ Holowaychuk (@tj)">
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/tj?s=96" alt="TJ Holowaychuk" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/tj.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">TJ Holowaychuk</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@tj</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">Prolific author of Express, Koa, Commander, and modern microservices tooling.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">Node.js</span>
+                  <span class="card-topic-tag">Express</span>
+                  <span class="card-topic-tag">Go</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+
+              <!-- Card 4 -->
+              <button type="button" class="example-profile-card" data-user="yyx990803" aria-label="Analyze Evan You (@yyx990803)">
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/yyx990803?s=96" alt="Evan You" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/yyx990803.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">Evan You</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@yyx990803</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">Creator of Vue.js and Vite. High-performance frontend toolchains &amp; reactivity systems.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">Vue</span>
+                  <span class="card-topic-tag">Vite</span>
+                  <span class="card-topic-tag">TypeScript</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+
+              <!-- Card 5 -->
+              <button type="button" class="example-profile-card" data-user="antfu" aria-label="Analyze Anthony Fu (@antfu)">
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/antfu?s=96" alt="Anthony Fu" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/antfu.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">Anthony Fu</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@antfu</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">Prolific open sourcer. Vue/Vite/Nuxt core team, creator of UnoCSS, Vitest, and Slidev.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">Vue</span>
+                  <span class="card-topic-tag">Vite</span>
+                  <span class="card-topic-tag">Nuxt</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+
+              <!-- Card 6 -->
+              <button type="button" class="example-profile-card" data-user="rauchg" aria-label="Analyze Guillermo Rauch (@rauchg)">
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/rauchg?s=96" alt="Guillermo Rauch" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/rauchg.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">Guillermo Rauch</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@rauchg</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">CEO of Vercel. Creator of Socket.io, Mongoose, and early Next.js architecture.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">Next.js</span>
+                  <span class="card-topic-tag">React</span>
+                  <span class="card-topic-tag">Cloud</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+
+              <!-- Card 7 -->
+              <button type="button" class="example-profile-card" data-user="wesbos" aria-label="Analyze Wes Bos (@wesbos)">
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/wesbos?s=96" alt="Wes Bos" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/wesbos.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">Wes Bos</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@wesbos</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">Full-stack JavaScript educator, web tooling advocate, and podcast host.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">JavaScript</span>
+                  <span class="card-topic-tag">React</span>
+                  <span class="card-topic-tag">Node.js</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+
+              <!-- Card 8 -->
+              <button type="button" class="example-profile-card" data-user="kentcdodds" aria-label="Analyze Kent C. Dodds (@kentcdodds)">
+                <div class="example-card-header">
+                  <img class="example-avatar" src="https://avatars.githubusercontent.com/kentcdodds?s=96" alt="Kent C. Dodds" loading="lazy" onerror="this.onerror=null; this.src='https://github.com/identicons/kentcdodds.png';">
+                  <div class="example-titles">
+                    <div class="example-name-row">
+                      <span class="example-name">Kent C. Dodds</span>
+                    </div>
+                    <div class="example-handle-row">
+                      <span class="example-handle">@kentcdodds</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="example-bio">Creator of Testing Library, Remix co-founder, and full-stack React educator.</p>
+                <div class="example-tags-row">
+                  <span class="card-topic-tag">Testing</span>
+                  <span class="card-topic-tag">React</span>
+                  <span class="card-topic-tag">Remix</span>
+                </div>
+                <div class="example-footer">
+                  <span class="example-action">Analyze &rarr;</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- View More / Expand Controls -->
+            <div class="explorer-footer-controls" id="explorer-footer-controls">
+              <div class="explorer-count-badge" id="explorer-count-badge">
+                Showing <span class="count-current">8</span> of <span class="count-total">14</span>
+              </div>
+              <button type="button" class="btn-explorer-expand" id="explorer-toggle-btn" aria-expanded="false">
+                <span class="expand-btn-text">View more</span>
+                <svg class="expand-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. What RepoLens Analyzes (4 Dimension Cards) -->
+        <section class="landing-section" id="what-we-analyze" aria-label="What RepoLens Analyzes">
+          <div class="section-header">
+            <span class="section-tag">02 / CORE ENGINE</span>
+            <h2 class="section-title">Deep telemetry across four analytical dimensions.</h2>
+            <p class="section-subtitle">RepoLens parses raw GitHub REST objects into structured, readable intelligence without fluff or third-party tracking.</p>
+          </div>
+
+          <div class="dimensions-grid">
+            <div class="dimension-card">
+              <div class="dimension-card-top">
+                <span class="dimension-index">01</span>
+                <div class="dimension-icon-badge">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="dimension-title">Profile Intelligence</h3>
+              <p class="dimension-desc">
+                Extracts complete developer identity, follower volume, following ratios, public repository index, company affiliations, geographical locations, external websites, and account tenure.
+              </p>
+              <div class="dimension-tags">
+                <span class="tag-pill">Public Repos</span>
+                <span class="tag-pill">Followers</span>
+                <span class="tag-pill">Longevity</span>
+              </div>
+            </div>
+
+            <div class="dimension-card">
+              <div class="dimension-card-top">
+                <span class="dimension-index">02</span>
+                <div class="dimension-icon-badge">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="dimension-title">Repositories &amp; Reach</h3>
+              <p class="dimension-desc">
+                Recursively paginates up to 2,000 repositories. Tracks cumulative star counts, community fork volume, active vs. archived flags, fork origin indicators, and ranked star leaders.
+              </p>
+              <div class="dimension-tags">
+                <span class="tag-pill">Stars &amp; Forks</span>
+                <span class="tag-pill">Archived State</span>
+                <span class="tag-pill">Top 5 Ranking</span>
+              </div>
+            </div>
+
+            <div class="dimension-card">
+              <div class="dimension-card-top">
+                <span class="dimension-index">03</span>
+                <div class="dimension-icon-badge">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="dimension-title">Language Distribution</h3>
+              <p class="dimension-desc">
+                Aggregates detected primary languages across the full repository index to compute dominant technology concentration, distinct language counts, and tagged repository ratios.
+              </p>
+              <div class="dimension-tags">
+                <span class="tag-pill">Chart.js Donut</span>
+                <span class="tag-pill">GitHub Colors</span>
+                <span class="tag-pill">Ratio Telemetry</span>
+              </div>
+            </div>
+
+            <div class="dimension-card">
+              <div class="dimension-card-top">
+                <span class="dimension-index">04</span>
+                <div class="dimension-icon-badge">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="dimension-title">Rolling Push Cadence</h3>
+              <p class="dimension-desc">
+                Evaluates repository push timestamps into 24-hour, 7-day, and 30-day rolling activity windows. Identifies the most recently pushed and oldest repositories with relative timestamps.
+              </p>
+              <div class="dimension-tags">
+                <span class="tag-pill">24h / 7d / 30d Windows</span>
+                <span class="tag-pill">Relative Times</span>
+                <span class="tag-pill">Push Events</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. How It Works (3-Step Connected Flow) -->
+        <section class="landing-section" id="how-it-works" aria-label="How It Works">
+          <div class="section-header">
+            <span class="section-tag">03 / WORKFLOW</span>
+            <h2 class="section-title">From query to analysis in milliseconds.</h2>
+            <p class="section-subtitle">A streamlined, zero-friction developer workflow that respects API limits and runs completely in your local browser runtime.</p>
+          </div>
+
+          <div class="steps-flow-wrapper">
+            <div class="steps-flow-line" aria-hidden="true"></div>
+            <div class="steps-grid">
+              <div class="step-card">
+                <div class="step-number-bubble">01</div>
+                <h3 class="step-title">Enter Username</h3>
+                <p class="step-desc">Provide any public GitHub developer or organization username, or pick one from curated open-source suggestions.</p>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number-bubble">02</div>
+                <h3 class="step-title">REST API Ingestion</h3>
+                <p class="step-desc">RepoLens queries GitHub's public REST endpoints via standard HTTPS, automatically traversing RFC 5988 Link headers for full repository pagination.</p>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number-bubble">03</div>
+                <h3 class="step-title">Interactive Workbench</h3>
+                <p class="step-desc">Pure in-memory analytical algorithms synthesize telemetry, render responsive Chart.js visualizers, and deliver an instant filterable repository explorer.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Real Technical Capabilities -->
+        <section class="landing-section" id="capabilities" aria-label="Real Technical Capabilities">
+          <div class="section-header">
+            <span class="section-tag">04 / SPECIFICATIONS</span>
+            <h2 class="section-title">Engineered for speed, density, and precision.</h2>
+            <p class="section-subtitle">Real production capabilities designed around modern browser standards without framework overhead.</p>
+          </div>
+
+          <div class="capabilities-grid">
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                <h4>GitHub REST API v3</h4>
+              </div>
+              <p>Direct HTTP communication with GitHub's public API endpoints, respecting rate headers and response boundaries.</p>
+            </div>
+
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <h4>RFC 5988 Link Pagination</h4>
+              </div>
+              <p>Automatically iterates multi-page repository collections (100 items/page, capped at 2,000) via standard Link headers.</p>
+            </div>
+
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                <h4>Pure In-Memory Analyzer</h4>
+              </div>
+              <p>Separation of concerns: all statistical computations, frequency counts, and sorting logic live as pure functions in <code>analyzer.js</code>.</p>
+            </div>
+
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <h4>Instant Filter &amp; Sort</h4>
+              </div>
+              <p>Client-side repository search across names and descriptions, plus multi-criteria sorting (Stars, Forks, Recently Updated, Name).</p>
+            </div>
+
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg>
+                <h4>Responsive Chart.js Graphics</h4>
+              </div>
+              <p>Accessible doughnut chart with authentic GitHub language colors, percentage computation, and responsive legend stacking.</p>
+            </div>
+
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <h4>Rolling Push Telemetry</h4>
+              </div>
+              <p>Measures actual push cadence across Today, 7-Day, and 30-Day rolling windows based on raw repository <code>pushed_at</code> timestamps.</p>
+            </div>
+
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <h4>Deep-Linking &amp; Keyboard Access</h4>
+              </div>
+              <p>Shareable query parameter <code>?u=username</code>, one-click link copying, and global <code>/</code> shortcut for rapid keyboard focus.</p>
+            </div>
+
+            <div class="capability-item">
+              <div class="cap-header">
+                <svg class="cap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <h4>Typed Error Boundaries</h4>
+              </div>
+              <p>Structured <code>ApiError</code> hierarchy handling missing profiles (404), rate limit resets, and network failures with informative feedback.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Technical Architecture Pipeline -->
+        <section class="landing-section" aria-label="Technical Architecture Pipeline">
+          <div class="section-header">
+            <span class="section-tag">05 / ARCHITECTURE</span>
+            <h2 class="section-title">Zero framework bloat. Pure client-side pipeline.</h2>
+            <p class="section-subtitle">RepoLens is architected as a modular, high-performance vanilla JavaScript application using standard browser APIs.</p>
+          </div>
+
+          <div class="architecture-strip">
+            <div class="pipeline-step">
+              <span class="pipeline-badge">SOURCE</span>
+              <div class="pipeline-title">GitHub REST v3</div>
+              <span class="pipeline-sub">Public API Endpoints</span>
+            </div>
+            <div class="pipeline-arrow" aria-hidden="true">&rarr;</div>
+            <div class="pipeline-step">
+              <span class="pipeline-badge">INGESTION</span>
+              <div class="pipeline-title">api.js</div>
+              <span class="pipeline-sub">Link Pagination &bull; DTOs</span>
+            </div>
+            <div class="pipeline-arrow" aria-hidden="true">&rarr;</div>
+            <div class="pipeline-step">
+              <span class="pipeline-badge">ANALYSIS</span>
+              <div class="pipeline-title">analyzer.js</div>
+              <span class="pipeline-sub">Pure Statistical Engine</span>
+            </div>
+            <div class="pipeline-arrow" aria-hidden="true">&rarr;</div>
+            <div class="pipeline-step">
+              <span class="pipeline-badge">WORKBENCH</span>
+              <div class="pipeline-title">ui.js + charts.js</div>
+              <span class="pipeline-sub">Reactive DOM &bull; Chart.js</span>
+            </div>
+          </div>
+
+          <div class="tech-stack-pills">
+            <span class="tech-pill">Vanilla JavaScript (ES6+)</span>
+            <span class="tech-pill">Semantic HTML5</span>
+            <span class="tech-pill">Modern CSS3 Tokens</span>
+            <span class="tech-pill">Chart.js 4.4</span>
+            <span class="tech-pill">GitHub REST API</span>
+            <span class="tech-pill">Zero Build Tools</span>
+            <span class="tech-pill">Zero Server Storage</span>
+          </div>
+        </section>
+
+        <!-- 8. Public Data & Privacy Note -->
+        <section class="landing-section-privacy" aria-label="Data and Privacy Notice">
+          <div class="privacy-card">
+            <div class="privacy-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <div class="privacy-text">
+              <h4 class="privacy-title">Public Data &amp; Local Execution Guarantee</h4>
+              <p class="privacy-desc">
+                RepoLens queries only publicly available GitHub profile and repository metadata via GitHub's official REST endpoints. No GitHub login, OAuth authorizations, or private scopes are ever requested. All calculations run strictly in your browser runtime with zero remote analytics, tracking scripts, or database logging.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 2. STATUS & NOTIFICATION CONTAINER (Loading, Error, Rate Limits) -->
+      <div id="status-container" class="status-container" style="display: none;">
+        <p id="status-message" class="status" role="status" aria-live="polite"></p>
+      </div>
+
+      <!-- 3. LIVE DEVELOPER ANALYTICS DASHBOARD VIEW -->
+      <div id="dashboard-view" class="dashboard-view" style="display: none;">
+        <aside id="profile-section" class="profile-section" aria-label="Developer Profile"></aside>
+
+        <section class="analytics-repo-column">
+          <div id="analytics-section" class="analytics-section" aria-label="Profile Analytics"></div>
+          <div id="analytics-middle-row" class="analytics-middle-row">
+            <div id="charts-section" class="charts-section" aria-label="Language Distribution"></div>
+            <div id="activity-section" class="activity-section" aria-label="Repository Activity"></div>
+          </div>
+          <div id="top-repos-section" class="top-repos-section" aria-label="Top Repositories"></div>
+          <div id="repos-section" class="repos-section" aria-label="Repositories"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-brand-row">
+          <span class="footer-brand">RepoLens</span>
+          <span class="footer-dot">&bull;</span>
+          <span>GitHub Profile &amp; Repository Intelligence</span>
+        </div>
+        <p class="footer-sub">Built with Vanilla JavaScript and Chart.js &bull; Data provided in real time via GitHub REST API</p>
+        <p class="footer-hint">Tip: Press <kbd class="footer-kbd">/</kbd> from anywhere to focus the search bar</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
